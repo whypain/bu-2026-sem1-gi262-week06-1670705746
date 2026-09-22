@@ -12,7 +12,8 @@ namespace MidtermExam.Prob02
         /// <returns>LinkedList ที่ได้รับการเรียงลำดับจากน้อยไปมากแล้ว</returns>
         public LinkedList<int> SortAscending(LinkedList<int> list)
         {
-            if (list == null || list.Count == 0) return null;
+            if (list == null) return null;
+            if (list.Count == 0) return list;
 
 
             var currNode = list.First;
@@ -20,9 +21,9 @@ namespace MidtermExam.Prob02
             {
                 for (int j = 0; j < list.Count - i; j++)
                 {
-                    if (currNode == null)
+                    if (currNode.Next == null)
                     {
-                        Debug.LogError($"currNode is null at i: {i}, j: {j}");
+                        break;
                     }
 
                     if (currNode.Value > currNode.Next.Value)
@@ -36,13 +37,15 @@ namespace MidtermExam.Prob02
                         list.Remove(currNode);
                         list.AddBefore(newCurrent, temp);
 
-                        currNode = newCurrent.Next;
+                        currNode = newCurrent;
                     }
                     else
                     {
                         currNode = currNode.Next;
                     }
                 }
+
+                currNode = list.First;
             }
 
             return list;
@@ -55,7 +58,40 @@ namespace MidtermExam.Prob02
         /// <returns>LinkedList ที่ได้รับการเรียงลำดับจากมากไปน้อยแล้ว</returns>
         public LinkedList<int> SortDescending(LinkedList<int> list)
         {
-            // TODO: Implement sorting algorithm for LinkedList<int> (Descending)
+            if (list == null) return null;
+            if (list.Count == 0) return list;
+
+            var currNode = list.First;
+            for (int i = 0; i < list.Count; i++)
+            {
+                for (int j = 0; j < list.Count - i; j++)
+                {
+                    if (currNode.Next == null)
+                    {
+                        break;
+                    }
+
+                    if (currNode.Value < currNode.Next.Value)
+                    {
+                        var temp = new LinkedListNode<int>(currNode.Next.Value);
+                        var newCurrent = new LinkedListNode<int>(currNode.Value);
+
+                        list.Remove(currNode.Next);
+                        list.AddAfter(currNode, newCurrent);
+
+                        list.Remove(currNode);
+                        list.AddBefore(newCurrent, temp);
+
+                        currNode = newCurrent;
+                    }
+                    else
+                    {
+                        currNode = currNode.Next;
+                    }
+                }
+
+                currNode = list.First;
+            }
             return list;
         }
     }
